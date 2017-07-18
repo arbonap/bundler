@@ -176,7 +176,7 @@ module Bundler
               "    end\n\n"
 
         raise DeprecatedError, msg if Bundler.feature_flag.disable_multisource?
-        SharedHelpers.major_deprecation(msg.strip)
+        SharedHelpers.major_deprecation(2, msg.strip)
       end
 
       source_options = normalize_hash(options).merge(
@@ -288,7 +288,7 @@ module Bundler
         repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
         # TODO: 2.0 upgrade this setting to the default
         if Bundler.settings["github.https"]
-          Bundler::SharedHelpers.major_deprecation "The `github.https` setting will be removed"
+          Bundler::SharedHelpers.major_deprecation 2, "The `github.https` setting will be removed"
           "https://github.com/#{repo_name}.git"
         else
           "git://github.com/#{repo_name}.git"
@@ -435,7 +435,7 @@ repo_name ||= user_name
     def normalize_source(source)
       case source
       when :gemcutter, :rubygems, :rubyforge
-        Bundler::SharedHelpers.major_deprecation "The source :#{source} is deprecated because HTTP " \
+        Bundler::SharedHelpers.major_deprecation 2, "The source :#{source} is deprecated because HTTP " \
           "requests are insecure.\nPlease change your source to 'https://" \
           "rubygems.org' if possible, or 'http://rubygems.org' if not."
         "http://rubygems.org"
@@ -459,7 +459,7 @@ repo_name ||= user_name
         end
         raise GemfileEvalError, msg
       else
-        Bundler::SharedHelpers.major_deprecation "Your Gemfile contains multiple primary sources. " \
+        Bundler::SharedHelpers.major_deprecation 2, "Your Gemfile contains multiple primary sources. " \
           "Using `source` more than once without a block is a security risk, and " \
           "may result in installing unexpected gems. To resolve this warning, use " \
           "a block to indicate which gems should come from the secondary source. " \
@@ -477,7 +477,7 @@ repo_name ||= user_name
         "do |repo_name|\n#{replacement.to_s.gsub(/^/, "      ")}\n    end"
       end
 
-      Bundler::SharedHelpers.major_deprecation <<-EOS
+      Bundler::SharedHelpers.major_deprecation 2, <<-EOS
 The :#{name} git source is deprecated, and will be removed in Bundler 2.0.#{additional_message} Add this code to the top of your Gemfile to ensure it continues to work:
 
     git_source(:#{name}) #{replacement}

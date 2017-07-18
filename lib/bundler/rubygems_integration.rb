@@ -451,7 +451,7 @@ module Bundler
         raise Gem::Exception, "no default executable for #{spec.full_name}" unless exec_name ||= spec.default_executable
 
         unless spec.name == name
-          Bundler::SharedHelpers.major_deprecation \
+          Bundler::SharedHelpers.major_deprecation 2,
             "Bundler is using a binstub that was created for a different gem.\n" \
             "You should run `bundle binstub #{gem_name}` " \
             "to work around a system/bundle conflict."
